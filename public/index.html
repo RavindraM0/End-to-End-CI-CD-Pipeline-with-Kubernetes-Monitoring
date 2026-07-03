@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CI/CD Pipeline Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        p {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .status {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        
+        .label {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .value {
+            color: #666;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #764ba2;
+        }
+        
+        .error {
+            color: #dc3545;
+        }
+        
+        .success {
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 CI/CD Pipeline Demo</h1>
+        <p>Kubernetes Deployment Status</p>
+        
+        <div class="status">
+            <div class="status-item">
+                <span class="label">Server Status:</span>
+                <span class="value" id="status">Loading...</span>
+            </div>
+            <div class="status-item">
+                <span class="label">Environment:</span>
+                <span class="value" id="environment">Loading...</span>
+            </div>
+            <div class="status-item">
+                <span class="label">Timestamp:</span>
+                <span class="value" id="timestamp">Loading...</span>
+            </div>
+            <div class="status-item">
+                <span class="label">Users Count:</span>
+                <span class="value" id="users-count">Loading...</span>
+            </div>
+        </div>
+        
+        <button onclick="checkHealth()">Check Health</button>
+        <button onclick="fetchData()">Fetch Data</button>
+        <button onclick="fetchUsers()">Fetch Users</button>
+    </div>
+    
+    <script>
+        async function checkHealth() {
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                document.getElementById('status').innerHTML = 
+                    `<span class="success">${data.status.toUpperCase()}</span>`;
+                document.getElementById('environment').textContent = data.environment;
+                document.getElementById('timestamp').textContent = new Date(data.timestamp).toLocaleString();
+            } catch (error) {
+                document.getElementById('status').innerHTML = 
+                    `<span class="error">ERROR</span>`;
+                console.error('Error:', error);
+            }
+        }
+        
+        async function fetchData() {
+            try {
+                const response = await fetch('/api/data');
+                const data = await response.json();
+                alert(`Message: ${data.message}\nVersion: ${data.version}`);
+            } catch (error) {
+                alert('Error fetching data');
+                console.error('Error:', error);
+            }
+        }
+        
+        async function fetchUsers() {
+            try {
+                const response = await fetch('/api/users');
+                const data = await response.json();
+                document.getElementById('users-count').textContent = data.users.length;
+                alert(`Users: ${data.users.map(u => u.name).join(', ')}`);
+            } catch (error) {
+                alert('Error fetching users');
+                console.error('Error:', error);
+            }
+        }
+        
+        // Auto-check health on page load
+        checkHealth();
+    </script>
+</body>
+</html>
