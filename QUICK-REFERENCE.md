@@ -1,82 +1,45 @@
-# ⚡ Quick Reference Guide
+# ⚡ Quick Reference
 
 ## Essential Commands
 
-**Local Development:**
-```bash
-npm install
-npm test
-npm start
-docker build -t devops-app .
-docker run -p 3000:3000 devops-app
-```
-
-**Kubernetes:**
-```bash
-kubectl get pods -n devops
-kubectl get svc -n devops
-kubectl get hpa -n devops
-kubectl logs -n devops -l app=devops-app -f
-kubectl top pods -n devops
-kubectl port-forward -n devops svc/devops-app 3000:80
-```
-
-**Helm:**
-```bash
-helm install devops-app helm/devops-app -n devops
-helm upgrade devops-app helm/devops-app -n devops
-helm uninstall devops-app -n devops
-helm list -n devops
-```
+**Logs**: `kubectl logs -n devops -l app=devops-app -f`
+**Resources**: `kubectl top pods -n devops`
+**HPA Watch**: `kubectl get hpa -n devops --watch`
+**Port Forward**: `kubectl port-forward -n devops svc/devops-app 3000:80`
+**Dashboard**: `./monitoring/monitor.sh`
 
 ## Common Tasks
 
-**Scale Pods:**
-```bash
-kubectl scale deployment devops-app --replicas=5 -n devops
-```
+**Scale pods**: `kubectl scale deployment devops-app --replicas=5 -n devops`
+**Update image**: `kubectl set image deployment/devops-app devops-app=YOUR_USERNAME/devops-app:TAG -n devops`
+**Restart pods**: `kubectl rollout restart deployment/devops-app -n devops`
+**Get pods**: `kubectl get pods -n devops`
+**Describe pod**: `kubectl describe pod <POD_NAME> -n devops`
 
-**Update Image:**
-```bash
-kubectl set image deployment/devops-app devops-app=YOUR_USERNAME/devops-app:TAG -n devops
-```
+## Helm Commands
 
-**Restart Pods:**
-```bash
-kubectl rollout restart deployment/devops-app -n devops
-```
-
-**View Logs (Real-time):**
-```bash
-kubectl logs -n devops -l app=devops-app -f
-```
-
-**Monitor Resources:**
-```bash
-kubectl top pods -n devops
-kubectl get hpa -n devops --watch
-```
+**Install**: `helm install devops-app helm/devops-app -n devops`
+**Upgrade**: `helm upgrade devops-app helm/devops-app -n devops`
+**List**: `helm list -n devops`
+**Uninstall**: `helm uninstall devops-app -n devops`
 
 ## Useful Aliases
 
 ```bash
 alias k='kubectl'
 alias kgp='kubectl get pods'
-alias kgs='kubectl get svc'
 alias kl='kubectl logs -f'
 alias kwp='kubectl get pods --watch'
 alias ktp='kubectl top pods'
 ```
 
-## Common Errors
+## Error Solutions
 
-| Error | Solution |
-|-------|----------|
+| Error | Fix |
+|-------|-----|
 | ImagePullBackOff | Image not in registry |
 | CrashLoopBackOff | Check pod logs |
-| Pending | Check resource availability |
-| Connection refused | Check service endpoints |
+| Pending | Check resources |
+| Connection refused | Check endpoints |
 
----
-
-**Version:** 1.0
+**Version**: 1.0

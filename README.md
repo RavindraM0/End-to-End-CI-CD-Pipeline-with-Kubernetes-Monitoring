@@ -1,104 +1,43 @@
 # 🚀 End-to-End CI/CD Pipeline with Kubernetes & Monitoring
 
-A production-ready CI/CD pipeline demonstrating modern DevOps practices.
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-Green-brightgreen)]() [![K8s](https://img.shields.io/badge/Kubernetes-1.28-blue)]() [![Docker](https://img.shields.io/badge/Docker-Latest-blue)]()
 
-## 📊 Project Status
+Production-ready CI/CD pipeline with Kubernetes, Docker, Helm, and Monitoring.
+
+## 📊 Status
 
 | Phase | Component | Status |
 |-------|-----------|--------|
-| 1 | Application Setup | ✅ |
-| 2 | Dockerization | ✅ |
-| 3 | GitHub Setup | ✅ |
-| 4 | CI/CD Workflow | ✅ 🟢 GREEN |
-| 5 | Kubernetes Setup | ✅ |
-| 6 | Monitoring Stack | ✅ |
-| 7 | Load Testing | ✅ |
-| 8 | Documentation | ✅ |
-
-## 🏗️ Architecture
-
-```
-GitHub → GitHub Actions (🟢 GREEN) → Docker Hub → Kubernetes → Monitoring
-```
-
-## 🛠️ Tech Stack
-
-- Node.js 18 + Express.js
-- Docker (multi-stage build)
-- GitHub Actions (CI/CD)
-- Kubernetes + Helm
-- Loki + Promtail (monitoring)
+| 1-7 | All Phases | ✅ Complete |
+| 8 | Documentation | ✅ Complete |
 
 ## 🚀 Quick Start
 
-**Local Development:**
-```bash
-npm install
-npm test
-npm start
-```
-
-**Deploy to Kubernetes:**
 ```bash
 kubectl apply -f k8s/
-kubectl apply -f k8s/hpa.yaml
-```
-
-**Deploy with Helm:**
-```bash
 helm install devops-app helm/devops-app -n devops
 ```
 
-## 📊 Monitoring
-
-**View Logs:**
-```bash
-kubectl logs -n devops -l app=devops-app -f
-```
-
-**Monitor Resources:**
-```bash
-kubectl top pods -n devops
-kubectl get hpa -n devops --watch
-```
-
-## 📈 Performance
-
-- **Tests:** 23/23 passing ✅
-- **RPS:** 100+ requests/sec
-- **Response Time:** <500ms
-- **Success Rate:** 100%
-- **Auto-scaling:** 2-5 pods
-
-## 📝 API Endpoints
-
-- `GET /health` - Health check
-- `GET /ready` - Readiness probe
-- `GET /api/data` - Sample data
-- `GET /api/users` - User list
-- `GET /metrics` - Prometheus metrics
+## 📊 Metrics
+- **Tests**: 23/23 passing ✅
+- **Requests/sec**: 100+ RPS
+- **Response Time**: <500ms
+- **Auto-Scaling**: 2-5 pods
+- **Success Rate**: 100%
 
 ## 📚 Documentation
+- README.md (this file)
+- ARCHITECTURE.md
+- DEPLOYMENT.md
+- QUICK-REFERENCE.md
+- PROJECT-SUMMARY.md
+- STATUS.md
 
-- `README.md` - Project overview (this file)
-- `ARCHITECTURE.md` - Technical design
-- `DEPLOYMENT.md` - Deployment guide
-- `QUICK-REFERENCE.md` - Command reference
-- `PROJECT-SUMMARY.md` - Project summary
-- `STATUS.md` - Final status
+## 🎯 Deploy Now
 
-## 🎯 Next Steps
+```bash
+kubectl port-forward -n devops svc/devops-app 3000:80 &
+curl http://localhost:3000/health
+```
 
-1. Review documentation files
-2. Deploy to Kubernetes cluster
-3. Add Prometheus monitoring
-4. Configure Grafana dashboards
-5. Set up alerting
-
-## 📄 License
-
-MIT License
-
----
-
-**Status:** ✅ Production Ready | **Last Updated:** July 2026
+**Status**: ✅ Production Ready | **Last Updated**: July 4, 2026

@@ -1,84 +1,54 @@
 # 🏗️ System Architecture
 
-## High-Level Design
-
-```
-GitHub Repository
-    ↓
-GitHub Actions (Tests → Build → Push)
-    ↓
-Docker Hub Registry
-    ↓
-Kubernetes (Minikube)
-├─ Deployment (2 replicas)
-├─ Service (ClusterIP)
-├─ HPA (2-5 pods)
-└─ ServiceMonitor
-    ↓
-Monitoring Stack (Loki + Promtail)
-```
-
+## Architecture Flow
 ## Components
 
 ### Application Layer
 - Express.js REST API
-- Health check endpoints
-- Prometheus metrics
-- Error handling & logging
+- Health endpoints (/health, /ready, /api/data, /api/users)
+- Prometheus metrics (/metrics)
 
 ### Container Layer
 - Docker multi-stage build
-- Non-root user
-- Health checks
-- Port 3000
+- Non-root user (uid: 1001)
+- Health checks enabled
 
 ### CI/CD Layer
-- GitHub Actions workflow
+- GitHub Actions automation
 - Automated testing (23 tests)
 - Docker build & push
-- Automated deployment
 
 ### Kubernetes Layer
 - Deployment (2 replicas)
 - Service (ClusterIP)
-- HPA (2-5 pods)
+- HPA (2-5 pods, 70% CPU, 80% Memory)
 - ServiceMonitor
 
 ### Monitoring Layer
 - Loki (log aggregation)
 - Promtail (log collection)
-- ServiceMonitor (metrics)
+- ServiceMonitor (metrics ready)
 
-## Data Flows
+## Data Flow
 
-**Request Flow:**
-```
-Client → Service → Pod 1/Pod 2 → Response
-```
+**Requests**: Client → Service → Pod 1/Pod 2 → Response
 
-**Metrics Flow:**
-```
-Application → ServiceMonitor → Prometheus
-```
+**Metrics**: Application → ServiceMonitor → Prometheus (ready)
 
-**Logs Flow:**
-```
-Application → Promtail → Loki
-```
+**Logs**: Application → Promtail → Loki
 
 ## Scalability
 
-- **Horizontal:** HPA auto-scales 2-5 pods based on CPU
-- **Vertical:** Configurable resource limits
-- **Performance:** 100+ RPS capacity, <500ms response time
+- Horizontal: HPA auto-scales 2-5 pods
+- Performance: 100+ RPS capacity
+- Response Time: <500ms
 
 ## Security
 
-- Non-root containers
-- Read-only filesystem
-- Resource limits enforced
-- Health checks configured
+✅ Non-root containers
+✅ Read-only filesystem
+✅ Resource limits
+✅ Health checks
+✅ Network policies ready
 
----
-
-**Version:** 1.0 | **Status:** Production Ready
+**Version**: 1.0 | **Status**: Production Ready
