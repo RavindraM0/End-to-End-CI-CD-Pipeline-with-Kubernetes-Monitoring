@@ -1,0 +1,99 @@
+{
+  "dashboard": {
+    "title": "DevOps App - Live Metrics",
+    "description": "Real-time monitoring of DevOps application",
+    "tags": ["devops", "production"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Requests Per Second",
+        "type": "graph",
+        "gridPos": {"x": 0, "y": 0, "w": 8, "h": 6},
+        "targets": [
+          {
+            "expr": "rate(http_requests_total[1m])",
+            "refId": "A",
+            "legendFormat": "RPS"
+          }
+        ],
+        "yaxes": [
+          {"format": "short", "label": "Requests/sec"}
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Pod CPU Usage",
+        "type": "graph",
+        "gridPos": {"x": 8, "y": 0, "w": 8, "h": 6},
+        "targets": [
+          {
+            "expr": "rate(container_cpu_usage_seconds_total{pod=~\"devops-app.*\"}[1m])",
+            "refId": "A",
+            "legendFormat": "{{pod}}"
+          }
+        ],
+        "yaxes": [
+          {"format": "short", "label": "CPU (cores)"}
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Pod Memory Usage (MB)",
+        "type": "graph",
+        "gridPos": {"x": 16, "y": 0, "w": 8, "h": 6},
+        "targets": [
+          {
+            "expr": "container_memory_usage_bytes{pod=~\"devops-app.*\"} / 1024 / 1024",
+            "refId": "A",
+            "legendFormat": "{{pod}}"
+          }
+        ],
+        "yaxes": [
+          {"format": "short", "label": "Memory (MB)"}
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Error Rate",
+        "type": "stat",
+        "gridPos": {"x": 0, "y": 6, "w": 8, "h": 6},
+        "targets": [
+          {
+            "expr": "rate(http_requests_total{status=~\"5..\"}[5m])",
+            "refId": "A",
+            "legendFormat": "Error Rate"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Latency p99 (ms)",
+        "type": "stat",
+        "gridPos": {"x": 8, "y": 6, "w": 8, "h": 6},
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.99, http_request_duration_seconds_bucket) * 1000",
+            "refId": "A",
+            "legendFormat": "p99"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Pod Replicas",
+        "type": "stat",
+        "gridPos": {"x": 16, "y": 6, "w": 8, "h": 6},
+        "targets": [
+          {
+            "expr": "count(kube_pod_info{namespace=\"devops\", pod=~\"devops-app.*\"})",
+            "refId": "A",
+            "legendFormat": "Replicas"
+          }
+        ]
+      }
+    ],
+    "refresh": "5s",
+    "time": {"from": "now-1h", "to": "now"}
+  }
+}
